@@ -1,4 +1,4 @@
-package grafoKruskal;
+package grafo;
 import java.util.ArrayList;
 
 public class Grafo {
@@ -9,7 +9,7 @@ public class Grafo {
 	
 	public Grafo(int vertices, int bordes){
 		this.vertices = vertices;
-		this.setBordes(bordes);
+		this.bordes = bordes;
 		
 		listaBordes = new ArrayList<Borde>();
 		
@@ -18,16 +18,6 @@ public class Grafo {
 			listaBordes.add(borde);
 		}
 	}
-	
-//	public Grafo(int vertices){
-//		listaBordes = new ArrayList<Borde>();
-//		this.vertices = 0;
-//		this.bordes = 0;
-//	}
-//	
-//	public void agregarVertice() {
-//		vertices++;
-//	}
 	
 	public void agregarBorde(int i, int salida, int destino, int peso) {
 		listaBordes.get(i).setSalida(salida);
@@ -61,7 +51,7 @@ public class Grafo {
 		}
 	}
 	
-	public int kruskalMST() {
+	public int pesoMinimoKruskal() {
 		Borde resultado[] = new Borde[vertices];
 		int e = 0;
 		int i = 0;

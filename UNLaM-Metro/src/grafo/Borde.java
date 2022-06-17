@@ -1,4 +1,4 @@
-package grafoKruskal;
+package grafo;
 
 public class Borde implements Comparable<Borde>{
 
@@ -18,7 +18,7 @@ public class Borde implements Comparable<Borde>{
 
 	@Override
 	public int compareTo(Borde otro) {
-		return this.peso - otro.peso;
+		return this.peso - otro.getPeso();
 	}
 
 	public int getSalida() {

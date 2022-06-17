@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
-import grafoKruskal.Grafo;
+import grafo.Grafo;
 
 public class GestorArchivos {
 
@@ -51,14 +51,13 @@ public class GestorArchivos {
 		
 	}
 	
-	public void escribirArchivo() {
+	public void escribirArchivo(int resultado) {
 		try {
 			FileWriter archivo = new FileWriter(path + ".out");
 			PrintWriter printer = new PrintWriter(archivo);
 			
-			int resultado = mapa.kruskalMST();
-			
 			printer.println(resultado);
+			System.out.println("Minima cantidad de puentes: " + resultado);
 			
 			printer.close();
 			

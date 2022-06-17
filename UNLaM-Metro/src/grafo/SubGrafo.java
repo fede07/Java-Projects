@@ -1,4 +1,4 @@
-package grafoKruskal;
+package grafo;
 
 public class SubGrafo {
 	
@@ -10,15 +10,12 @@ public class SubGrafo {
 		this.rango = rango;
 	}
 	
-	public SubGrafo() {
-	}
-
-	public int getPadre() {
-		return padre;
-	}
-	
 	public int getRango() {
 		return rango;
+	}
+	
+	public int getPadre() {
+		return padre;
 	}
 	
 	public void setPadre(int padre) {
