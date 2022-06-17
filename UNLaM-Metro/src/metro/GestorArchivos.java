@@ -1,6 +1,9 @@
 package metro;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Scanner;
 
 import grafoKruskal.Grafo;
@@ -43,7 +46,23 @@ public class GestorArchivos {
 			
 			refarch.close();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public void escribirArchivo() {
+		try {
+			FileWriter archivo = new FileWriter(path + ".out");
+			PrintWriter printer = new PrintWriter(archivo);
+			
+			int resultado = mapa.kruskalMST();
+			
+			printer.println(resultado);
+			
+			printer.close();
+			
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
