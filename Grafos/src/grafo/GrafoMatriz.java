@@ -12,7 +12,7 @@ public class GrafoMatriz extends Grafo {
 	private int[] padresArray;
 	private int[] distancias;
 	private int padresKruskal[];
-	private ArrayList<Nodo> nodos;
+	private ArrayList<Nodo> nodosLista;
 	private PriorityQueue<Conexion> conexionesLista;
 	private boolean visitadosDFS[];
 	private int cantSubgrafos;
@@ -27,74 +27,100 @@ public class GrafoMatriz extends Grafo {
 
 	}
 
-	@Override
-	public ArrayList<Integer> bfs(int inicio) {
+	public int[] bfsInterno(int inicio) {
 		LinkedList<Integer> nodoCola = new LinkedList<Integer>();
 		boolean[] visitados = new boolean[cantNodos];
-		ArrayList<Integer> recorrido = new ArrayList<Integer>();
+		int[] recorrido = new int[cantNodos + 1];
 
 		for (int i = 0; i < cantNodos; i++) {
 			visitados[i] = false;
+			recorrido[i] = -1;
 		}
 
 		nodoCola.add(inicio);
-		visitados[0] = true;
 
 		while (!nodoCola.isEmpty()) {
 			int nodo = nodoCola.poll();
+			visitados[nodo] = true;
 			int[] vecinos = matrizAdj[nodo];
 
 			for (int i = 0; i < cantNodos; i++) {
 				if (!visitados[i] && vecinos[i] > 0) {
 					nodoCola.add(vecinos[i]);
 					visitados[i] = true;
-					recorrido.add(nodo);
+					recorrido[i] = nodo;
 				}
 			}
 
 		}
 
-		Collections.reverse(recorrido);
-
 		return recorrido;
 	}
+	
+	@Override
+	public ArrayList<Integer> bfs(int start, int end) {
+		
+		int[] recorrido = bfsInterno(start);
+		
+		ArrayList<Integer> path = new ArrayList<>();
+		for (int at = end; at != -1; at = recorrido[at]) {
+			path.add(at);
+		}
+		Collections.reverse(path);
+		if (path.get(0) == start)
+			return path;
+		
+		path.clear();
+		return path;
+	}
 
-	public int bfsGrid() {
+	public int bfsGrid(int inicio) {
 		PriorityQueue<Nodo> nodoPQ = new PriorityQueue<Nodo>();
-		ArrayList<Integer> recorrido = new ArrayList<Integer>();
-		boolean[] visitados = new boolean[cantNodos];
+		boolean[] visitados = new boolean[cantNodos+1];
 		boolean terminado = false;
 		int nodosEnCapa = 1;
 		int nodosEnProximaCapa = 0;
 		int recorridos = 0;
 
-		if (nodos == null) {
+		if (nodosLista == null) {
 			crearListaNodos();
 		}
 
-		visitados[0] = true;
-
-		Nodo inicial = nodos.get(0);
-		Nodo ultimo = nodos.get(cantNodos - 1);
+		Nodo inicial = nodosLista.get(inicio);
+		Nodo ultimo = nodosLista.get(cantNodos - 1);
 
 		nodoPQ.add(inicial);
 
 		while (!nodoPQ.isEmpty()) {
-
+			
 			Nodo actual = nodoPQ.poll();
 
+			visitados[actual.getID()] = true;
+			
 			if (actual.comparar(ultimo)) {
 				terminado = true;
 				break;
 			}
 
-			for (int i = 0; i < cantNodos; i++) {
-
-				if (!visitados[i]) {
-					nodoPQ.add(nodos.get(i));
+//			for (int i = 0; i < cantNodos; i++) {
+//
+//				int vecino = matrizAdj[actual.getID()][i];
+//				
+//				if (vecino != 0 && !visitados[i]) {
+//					nodoPQ.add(nodosLista.get(i));
+//					nodosEnProximaCapa++;
+//					visitados[i] = true;
+//				}
+//			}
+//			
+			for(int vecino : actual.getArrayAdj()) {
+				
+				if (vecino != 0 && !visitados[vecino]) {
+					nodoPQ.add(nodosLista.get(vecino));
 					nodosEnProximaCapa++;
-					visitados[i] = true;
+					visitados[vecino] = true;
 				}
+				
 			}
 
 			nodosEnCapa--;
@@ -103,7 +129,6 @@ public class GrafoMatriz extends Grafo {
 				nodosEnCapa = nodosEnProximaCapa;
 				nodosEnProximaCapa = 0;
 				recorridos++;
-				recorrido.add(actual.getID());
 			}
 
 			if (terminado) {
@@ -134,30 +159,30 @@ public class GrafoMatriz extends Grafo {
 
 		visitadosDFS[inicio - 1] = true;
 		subGrafos[inicio] = cantSubgrafos;
-		
-		int[] vecinos = nodos.get(inicio).getArrayAdj();
+
+		int[] vecinos = nodosLista.get(inicio).getArrayAdj();
 		for (int i = 0; i < cantNodos; i++) {
 			if (vecinos[i] > 0) {
 				dfsCiclo(vecinos[i]);
 			}
 		}
 	}
-	
+
 	public int buscarSubgrafos() {
-		
+
 		for (int i = 0; i < visitadosDFS.length; i++) {
-			visitadosDFS[i]= false;
+			visitadosDFS[i] = false;
 		}
-		
+
 		cantSubgrafos = 0;
-		
-		for (int i=0;i<cantNodos;i++) {
-			if(!visitadosDFS[i]) {
+
+		for (int i = 0; i < cantNodos; i++) {
+			if (!visitadosDFS[i]) {
 				cantSubgrafos++;
 				dfs(i);
 			}
 		}
-		
+
 		return cantSubgrafos;
 	}
 
@@ -302,7 +327,7 @@ public class GrafoMatriz extends Grafo {
 			}
 
 		}
-		
+
 		return pesoMinimoKruskal;
 
 	}
@@ -317,11 +342,11 @@ public class GrafoMatriz extends Grafo {
 
 	private void crearListaNodos() {
 
-		nodos = new ArrayList<Nodo>();
+		nodosLista = new ArrayList<Nodo>();
 
 		for (int i = 0; i < cantNodos; i++) {
 			Nodo nodo = new Nodo(i + 1, matrizAdj[i]);
-			nodos.add(nodo);
+			nodosLista.add(nodo);
 		}
 	}
 }
