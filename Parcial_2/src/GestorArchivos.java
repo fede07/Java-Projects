@@ -47,7 +47,8 @@ public class GestorArchivos {
 			PrintWriter output = new PrintWriter(archivo);
 			
 			if(arbol.isArbol()) {
-				output.println("Si");
+				int raiz = arbol.getRaices().get(0);
+				output.println("Si " +raiz);
 				output.close();
 				return;
 			}
@@ -56,7 +57,10 @@ public class GestorArchivos {
 				for(Integer raiz :arbol.getRaices()){
 					output.print(raiz + " ");
 				}
-				output.println("0");
+				if(arbol.getRaices().isEmpty()){
+					output.print("0");
+				}
+				output.println();
 			}else {
 				output.println(arbol.getRaices().get(0));
 			}
@@ -73,11 +77,11 @@ public class GestorArchivos {
 			if (arbol.isR1()) {
 				if(!arbol.isR3() ) {
 					int[] distancias = arbol.getDistancias();
+					//boolean[] distancias = arbol.getVisitados();
 					for (int i = 0; i < distancias.length; i++) {
-						if (distancias[i] == Integer.MAX_VALUE - 1000) {
-							output.print(i+" ");
+						if (distancias[i] == Integer.MAX_VALUE-1000) {
+							output.print(i+1+" ");
 						}
-						output.println("");
 					}
 				}else{
 					output.println("0");

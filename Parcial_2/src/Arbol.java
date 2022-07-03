@@ -10,6 +10,7 @@ public class Arbol {
 	private boolean r1;
 	private boolean r2;
 	private boolean r3;
+	private boolean[] visitados;
 	private int[] distancias;
 
 	Arbol(Grafo grafo, int[] apuntado) {
@@ -31,6 +32,7 @@ public class Arbol {
 		}
 		if (raices.size() == 1) {
 			distancias = grafo.dijkstra(raices.get(0));
+			//visitados = grafo.bfsInterno(raices.get(0));
 			r1 = true;
 			r3 = true;
 		}
@@ -38,11 +40,15 @@ public class Arbol {
 			r2 = true;
 		}
 		int i=0;
+//		if(visitados != null) {
+//			while(r3 && i<visitados.length) {
+//				if (visitados[i] == false) {
 		if(distancias != null) {
 			while(r3 && i<distancias.length) {
 				if (distancias[i] == Integer.MAX_VALUE - 1000) {
 					r3 = false;
 				}
+				i++;
 			}			
 		}
 		if (r1 && r2 && r3) {
@@ -80,8 +86,10 @@ public class Arbol {
 	public ArrayList<Integer> getRaices() {
 		return raices;
 	}
-	
-	
+
+	public boolean[] getVisitados() {
+		return visitados;
+	}
 	
 
 }
