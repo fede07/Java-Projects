@@ -72,12 +72,12 @@ public class GestorArchivos {
 		
 			if (arbol.isR1()) {
 				if(!arbol.isR3() ) {
-					int[] distancias = arbol.getDistancias();
+					//int[] distancias = arbol.getDistancias();
+					boolean[] distancias = arbol.getVisitados();
 					for (int i = 0; i < distancias.length; i++) {
-						if (distancias[i] == Integer.MAX_VALUE - 1000) {
-							output.print(i+" ");
+						if (distancias[i] == false) {
+							output.print(i+1+" ");
 						}
-						output.println("");
 					}
 				}else{
 					output.println("0");

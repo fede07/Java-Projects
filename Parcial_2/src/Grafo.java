@@ -1,3 +1,4 @@
+import java.util.LinkedList;
 import java.util.PriorityQueue;
 
 public class Grafo {
@@ -11,13 +12,14 @@ public class Grafo {
 	}
 	
 	public int[] dijkstra(int inicio) {
-		boolean visitado[] = new boolean[cantNodos + 1];
-		distancias = new int[cantNodos + 1];
-		for (int i = 0; i <= cantNodos; i++) {
+		boolean visitado[] = new boolean[cantNodos];
+		distancias = new int[cantNodos];
+		for (int i = 0; i < cantNodos; i++) {
 			distancias[i] = Integer.MAX_VALUE - 1000;
 			visitado[i] = false;
 		}
-
+		
+		inicio = inicio-1;
 		distancias[inicio] = 0;
 		PriorityQueue<Nodo> pq = new PriorityQueue<Nodo>();
 		pq.add(new Nodo(inicio, distancias[inicio]));
@@ -45,5 +47,32 @@ public class Grafo {
 		}
 
 		return distancias;
+	}
+	
+	public boolean[] bfsInterno(int inicio) {
+		LinkedList<Integer> nodoCola = new LinkedList<Integer>();
+		boolean[] visitados = new boolean[cantNodos];
+
+		for (int i = 0; i < cantNodos; i++) {
+			visitados[i] = false;
+		}
+
+		nodoCola.add(inicio);
+
+		while (!nodoCola.isEmpty()) {
+			int nodo = nodoCola.poll();
+			visitados[nodo] = true;
+			int[] vecinos = matAdj[nodo];
+
+			for (int i = 0; i < cantNodos; i++) {
+				if (!visitados[i] && vecinos[i] > 0) {
+					nodoCola.add(vecinos[i]);
+					visitados[i] = true;
+				}
+			}
+
+		}
+
+		return visitados;
 	}
 }
